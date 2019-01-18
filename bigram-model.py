@@ -1,9 +1,8 @@
 import queue as q
 
-
 class Node:
     def __init__(self, next_word, probability):
-        self.nword = next_word
+        self.next = next_word
         self.probability = probability
 
     def __le__(self, other):
@@ -21,36 +20,30 @@ class Node:
     def __eq__(self, other):
         return self.probability == other.probability
 
+    def get_word(self):
+        return self.next
 
-def bigram_model(word_table, split_line):
-    """
-    Creates a bi-gram string model which can be used for autocomplete.
 
-    :type word_table: dict
-    """
+def bigram_counter(gram_count, split_line):
     for i in range(1,len(split_line)):
-        if split_line[i-1] not in word_table:
-            word_table[split_line[i-1]] = q.PriorityQueue()
-        word_table[split_line[i-1]].put(Node(word_table[split_line[i]], 1/len(word_table[split_line[i-1]])))
+        curr_word = split_line[i-1]
+        if curr_word not in gram_count:
+            gram_count[curr_word] = 0
+        gram_count[curr_word] += 1
+
 
 
 
 if __name__ == "__main__":
-    word_table = dict()
-    fw = open("edited_queries.txt", 'w')
+    unigram_count = dict()
 
-    try:
-        with open("cw09b-trec_eval-queries.txt", 'r') as f:
-            # for line in f:
-            line = f.readline()
-            line = '<s> ' + line[:len(line)-1] + ' </s>\n'
-            bigram_model(word_table, line.split(" "))
-                # In case we need this same format again
-                # fw.write(line)
-    except IOError:
-        print("Unable to write!")
+    with open('cw09b-trec_eval-queries.txt', 'r') as f:
+        i = 0
+        for line in f:
+            line = "<s> " + line[:len(line)-1] + " </s>"
+            bigram_counter(unigram_count, line.split(" "))
+            if i == 2:
+                break
+            i+=1
 
-    finally:
-        fw.close()
-
-    print(word_table)
+    print(unigram_count)
