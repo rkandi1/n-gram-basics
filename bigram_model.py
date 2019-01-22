@@ -1,4 +1,3 @@
-import queue as q
 
 class Node:
     def __init__(self, next_word, probability):
@@ -54,27 +53,3 @@ def individual_probabilities(individual_prob_count, unigram_count):
     for key in individual_prob_count.keys():
         for node in individual_prob_count[key]:
             node.probability = node.probability/unigram_count[key]
-
-
-if __name__ == "__main__":
-    unigram_count = dict()
-    individual_gram_count = dict()
-
-    with open('cw09b-trec_eval-queries.txt', 'r') as f:
-        i=0
-        for line in f:
-            line = "<s> " + line[:len(line)-1] + " </s>"
-            line_list = line.split(" ")
-            bigram_counter(unigram_count, line_list)
-            individual_word_counter(individual_gram_count, line_list)
-            if i == 10:
-                break
-            i+=1
-
-    individual_probabilities(individual_gram_count, unigram_count)
-
-    for word in individual_gram_count:
-        print(word + ": " + str(unigram_count[word]) + ": [", end="")
-        for node in individual_gram_count[word]:
-            print(node.next + ": " + str(node.probability) + ", ", end="")
-        print("], ")
