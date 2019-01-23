@@ -22,14 +22,14 @@ def line_counting():
 
             print("Values written")
 
+
 def split_file(file):
     """
     Splits the clueweb dataset into the training set and the test set.
     Training set will have it's own file, and so will test set.
     :param file: Name of the file
     """
-    train_write = open("train_set.txt", 'w')
-    test_write = open("test_set.txt", 'w')
+    train_write, test_write = open("train_set.txt", 'w'), open("test_set.txt", 'w')
     try:
         with open(file) as f:
             size = int(f.readline())
