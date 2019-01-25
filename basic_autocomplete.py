@@ -1,4 +1,5 @@
 import bigram_model
+import model_testing
 
 
 def complete_query(query, individual_gram_count):
@@ -27,16 +28,19 @@ if __name__ == "__main__":
 
         bigram_model.individual_probabilities(individual_gram_count, unigram_count)
 
-    while True:
-        query = str(input("Make a query: "))
-        isahit = False
-        query = query.split(' ')[0]
-        for node in individual_gram_count["<s>"]:
-            if node.next == query:
-                sentence = complete_query(query, individual_gram_count)
-                print(sentence)
-                isahit = True
-                break
+    PP = model_testing.perplexity("files/test_set.txt", individual_gram_count)
+    print(PP)
 
-        if not isahit:
-            print(query)
+    # while True:
+    #     query = str(input("Make a query: "))
+    #     isahit = False
+    #     query = query.split(' ')[0]
+    #     for node in individual_gram_count["<s>"]:
+    #         if node.next == query:
+    #             sentence = complete_query(query, individual_gram_count)
+    #             print(sentence)
+    #             isahit = True
+    #             break
+    #
+    #     if not isahit:
+    #         print(query)
